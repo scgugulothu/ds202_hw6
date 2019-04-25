@@ -1,0 +1,44 @@
+---
+title: "hw6"
+author: "Sai Gugulothu"
+date: "4/24/2019"
+output: html_document
+---
+
+Homework #6: Top Dogs 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Recreating Top Dog Graph
+
+```{r}
+#needed libraries
+library(ggrepel)
+library(ggplot2)
+library(readxl)
+
+#Import Data
+bestFull <- read_xlsx("KIB - Best in Show (public).xlsx", sheet = "Best in show full sheet", skip = 3)
+best <- read_xlsx("KIB - Best in Show (public).xlsx", sheet = "Best in show", skip = 7)
+
+
+bestFull <- bestFull[c(1,3,5,7,11,32)]  #Retreived need data for the graph 
+names(bestFull) <- c("Breed_of_Dog","Type_of_Dog","Data_Score","Popularity","Intelligence_of_Dog","Size_of_Dog") 
+#Renamed Cloumns above 
+bestFull <- na.omit(bestFull)
+
+bestFull
+
+
+#Created a ggplot that mimics the top dog graph 
+ggplot(bestFull, aes(x=Data_Score, y=Popularity, size=Intelligence_of_Dog, color=Type_of_Dog, shape=Size_of_Dog)) + geom_point() + scale_color_manual(breaks = c("Herding","Hound","Working","Sporting","Non-sporting","Terrier","Toy"), values=c("Red","Blue","Yellow","Green","Purple","Grey","Brown"), aesthetics="Color") +  geom_text_repel(aes(label=Breed_of_Dog), color="black", size = 2) + guides(size=FALSE) + xlab("Data Score") + ylab("Popularity")+ ggtitle("Ultimate Data Dog") + scale_y_reverse()
+
+
+```
+
+
+
+
